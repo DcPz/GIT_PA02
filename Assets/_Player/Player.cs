@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
     private Animator thisAnimator = null;
 
     private float moveSpeed = 0.05f;
+    public GameObject Image_Lives;
 
     void Start()
     {
@@ -52,6 +54,28 @@ public class Player : MonoBehaviour
 
         thisController.Move(MoveDirection);
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -1.5f, 1.5f), transform.position.y, transform.position.z);
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if(collision.gameObject.tag == "Obstacles")
+        {
+            print("hit");
+            GameManager.Lives--;
+            HUD.HUDManager.UpdateLives();
+        }
+        if(GameManager.Lives == 0)
+        {
+
+        }
+
+        if (collision.gameObject.tag == "ScorePoint")
+        {
+            GameManager.Score++;
+            HUD.HUDManager.UpdateScore();
+        }
+
+
     }
 
 }
